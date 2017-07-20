@@ -1,0 +1,45 @@
+<!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<h1>{{object.location}} {{object.boxNumber}}번</h1>
+<br>
+<div>userID: {{ object.userID}}</div>
+<div>microswitch: {{ object.microswitch}}</div>
+<div>led: {{object.led}}</div>
+<div>image: {{object.image}}</div>
+<div>lock: {{object.lock}}</div>
+<input type="text" id="output">
+
+   {% if object.lock == 1 %}
+   <div><button class="btn btn-default" name="button" id="btn" value="open">문 열기</button></div>
+   {% else %}
+   <div><button class="btn btn-default" name="button" id="btn" value="close">문 닫기</button></div>
+   {% endif %}
+
+   <div><button class="btn btn-default">사진 보기</button></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#btn").click(function(){
+      var lock = $('#btn').val();
+      var boxID="{{object.boxID}}"
+      $.ajax({
+        type: 'POST',
+        url:'/lock/',
+        dataType:"json",
+        async:true,
+        data:{
+          lock:lock,
+          boxID:boxID,
+          csrfmiddlewaretoken:'{{ csrf_token}}'
+        },
+        suceess:function(data){
+          $('#output').val(data.lock);
+        },
+        error: function(){
+          alert('err')
+        },
+      });
+      });
+    });
+</script>
