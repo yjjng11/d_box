@@ -1,6 +1,32 @@
 <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-default">
+   <div class="container">
+    <div class="navbar-header pagescroll">
+     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+     </button>
+     <a class="navbar-brand" href="{% url 'home:home' %}">Delivery Box</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+
+     <ul class="nav navbar-nav navbar-right">
+       <li><a href="{% url 'home:home' %}">예약하기</a></li>
+       <li><a href="{% url 'home:mybox' %}">My Box</a></li>
+       <li><a href="{% url 'home:logout_user' %}">Logout</a></li>
+     </ul>
+    </div>
+   </div>
+  </nav>
+
 <h1>{{object.location}} {{object.boxNumber}}번</h1>
 <br>
 <div>userID: {{ object.userID}}</div>
@@ -8,7 +34,6 @@
 <div>led: {{object.led}}</div>
 <div>image: {{object.image}}</div>
 <div>lock: {{object.lock}}</div>
-<input type="text" id="output">
 
    {% if object.lock == 1 %}
    <div><button class="btn btn-default" name="button" id="btn" value="open">문 열기</button></div>
@@ -17,9 +42,10 @@
    {% endif %}
 
    <div><button class="btn btn-default">사진 보기</button></div>
+   <div><button class="btn btn-default">반납하기</button></div>
 
 <script type="text/javascript">
-  $(document).ready(function(){
+  /*$(document).ready(function(){
     $("#btn").click(function(){
       var lock = $('#btn').val();
       var boxID="{{object.boxID}}"
@@ -34,7 +60,6 @@
           csrfmiddlewaretoken:'{{ csrf_token}}'
         },
         suceess:function(data){
-          $('#output').val(data.lock);
         },
         error: function(){
           alert('err')

@@ -6,7 +6,7 @@ class BoxAdmin(admin.ModelAdmin):
 
 
 class UsageAdmin(admin.ModelAdmin):
-    list_display = ('userID','boxID','boxNumber','location','startDate','finishDate','price','paymentDate')
+    list_display = ('userID','boxID','startDate','finishDate','additionalFee','totalPrice')
 
 admin.site.register(Box, BoxAdmin)
 admin.site.register(Usage_Info, UsageAdmin)

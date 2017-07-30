@@ -19,12 +19,10 @@ class Box(models.Model):
 class Usage_Info(models.Model):
     userID = models.ForeignKey(User)
     boxID = models.ForeignKey(Box)
-    boxNumber = models.IntegerField(default=0)
-    location = models.CharField(max_length=30, default=0)
-    startDate = models.DateField(default=0)
+    startDate = models.DateField(auto_now_add=True)
     finishDate = models.DateField(default=0)
-    price = models.IntegerField(default=0)
-    paymentDate = models.DateField(default=0)
+    additionalFee = models.IntegerField(default=0)
+    totalPrice = models.IntegerField(default=0)
 
     def __str__(self):
         return self.userID

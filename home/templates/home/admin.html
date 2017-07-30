@@ -1,0 +1,289 @@
+{% load staticfiles %}
+
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+<!-- bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- my css -->
+<link rel="stylesheet" href="{% static "css/styles.css" %}">
+
+<!-- Navigation -->
+<nav class="navbar navbar-default">
+ <div class="container">
+  <div class="navbar-header pagescroll">
+   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+   </button>
+   <a class="navbar-brand" href="{% url 'home:home' %}">Delivery Box</a>
+  </div>
+  <div class="collapse navbar-collapse" id="myNavbar">
+
+   <ul class="nav navbar-nav navbar-right">
+     <li><a href="{% url 'home:home' %}">예약하기</a></li>
+     <li><a href="{% url 'home:mybox' %}">My Box</a></li>
+     <li><a href="{% url 'home:logout_user' %}">Logout</a></li>
+     <li><a href="{% url 'home:custom_admin' %}">관리자</a></li>
+   </ul>
+  </div>
+ </div>
+</nav>
+
+
+
+<div class="col-md-10">
+  <div class="content-box-large">
+
+      <h2>Boxes</h2>
+
+        <!--{% if boxes.0.state == 0 %}
+           <img src="{% static "images/unused_box.png" %}" width="100px" height="100px">
+        {% else %}
+           <img src="{% static "images/used_box.png" %}"  width="100px" height="100px">
+           User : {{boxes.0.userID}}
+        {% endif %}
+
+        {% if boxes.0.lock == 1 %}
+          <Button class="btn btn-default" name="button" id="btn_close" value={{boxes.0.boxID}}>close</button>
+        {% else %}
+          <Button class="btn btn-default" name="button" id="btn_open" value={{boxes.0.boxID}}>open</button>
+        {% endif %}
+
+        {% if boxes.1.state == 0 %}
+           <img src="{% static "images/unused_box.png" %}" width="100px" height="100px">
+        {% else %}
+           <img src="{% static "images/used_box.png" %}"  width="100px" height="100px">
+           User : {{box.userID}}
+        {% endif %}
+
+        {% if boxes.1.lock == 1 %}
+          <Button class="btn btn-default" name="button" id="btn_close" value={{boxes.1.boxID}}>close</button>
+        {% else %}
+          <Button class="btn btn-default" name="button" id="btn_open" value={{boxes.1.boxID}}>open</button>
+        {% endif %}
+
+        {% if boxes.2.state == 0 %}
+           <img src="{% static "images/unused_box.png" %}" width="100px" height="100px">
+        {% else %}
+           <img src="{% static "images/used_box.png" %}"  width="100px" height="100px">
+           User : {{box.userID}}
+        {% endif %}
+
+        {% if boxes.2.lock == 1 %}
+          <Button class="btn btn-default" name="button" id="btn_close" value={{boxes.2.boxID}}>close</button>
+        {% else %}
+          <Button class="btn btn-default" name="button" id="btn_open" value={{boxes.2.boxID}}>open</button>
+        {% endif %}
+
+        {% if boxes.3.state == 0 %}
+           <img src="{% static "images/unused_box.png" %}" width="100px" height="100px">
+        {% else %}
+           <img src="{% static "images/used_box.png" %}"  width="100px" height="100px">
+           User : {{box.userID}}
+        {% endif %}
+
+        {% if boxes.3.lock == 1 %}
+          <Button class="btn btn-default" name="button" id="btn_close" value={{boxes.3.boxID}}>close</button>
+        {% else %}
+          <Button class="btn btn-default" name="button" id="btn_open" value={{boxes.3.boxID}}>open</button>
+        {% endif %}
+
+        {% if boxes.4.state == 0 %}
+           <img src="{% static "images/unused_box.png" %}" width="100px" height="100px">
+        {% else %}
+           <img src="{% static "images/used_box.png" %}"  width="100px" height="100px">
+           User : {{box.userID}}
+        {% endif %}
+
+        {% if boxes.4.lock == 1 %}
+          <Button class="btn btn-default" name="button" id="btn_close" value={{boxes.4.boxID}}>close</button>
+        {% else %}
+          <Button class="btn btn-default" name="button" id="btn_open" value={{boxes.4.boxID}}>open</button>
+        {% endif %}-->
+
+        {% for box in boxes %}
+          {% if box.state == 0 %}
+            <img src="{% static "images/unused_box.png" %}" width="100px" height="100px">
+           {% else %}
+           <img src="{% static "images/used_box.png" %}"  width="100px" height="100px">
+           User : {{box.userID}}
+           {% endif %}
+        {% endfor %}
+
+
+      <!--  <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content" >
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Usage information</h4>
+              </div>
+              <div class="modal-body" >
+                <p id="modal_body"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close_modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>-->
+
+    </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="content-box-large">
+        <div class="panel-heading">
+        <div class="panel-title">New vs Returning Visitors</div>
+
+        <div class="panel-options">
+          <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+          <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+        </div>
+      </div>
+        <div class="panel-body">
+          <div class="container">
+    <h2>Modal Example</h2>
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+
+  </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="content-box-header">
+            <div class="panel-title">New vs Returning Visitors</div>
+
+          <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+          </div>
+          </div>
+          <div class="content-box-large box-with-header">
+
+            Pellentesque luctus quam quis consequat vulputate. Sed sit amet diam ipsum. Praesent in pellentesque diam, sit amet dignissim erat. Aliquam erat volutpat. Aenean laoreet metus leo, laoreet feugiat enim suscipit quis. Praesent mauris mauris, ornare vitae tincidunt sed, hendrerit eget augue. Nam nec vestibulum nisi, eu dignissim nulla.
+          <br /><br />
+        </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="content-box-header">
+            <div class="panel-title">New vs Returning Visitors</div>
+
+          <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+          </div>
+          </div>
+          <div class="content-box-large box-with-header">
+
+            Pellentesque luctus quam quis consequat vulputate. Sed sit amet diam ipsum. Praesent in pellentesque diam, sit amet dignissim erat. Aliquam erat volutpat. Aenean laoreet metus leo, laoreet feugiat enim suscipit quis. Praesent mauris mauris, ornare vitae tincidunt sed, hendrerit eget augue. Nam nec vestibulum nisi, eu dignissim nulla.
+          <br /><br />
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 panel-warning">
+      <div class="content-box-header panel-heading">
+        <div class="panel-title ">New vs Returning Visitors</div>
+
+      <div class="panel-options">
+        <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+        <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+      </div>
+      </div>
+      <div class="content-box-large box-with-header">
+        Pellentesque luctus quam quis consequat vulputate. Sed sit amet diam ipsum. Praesent in pellentesque diam, sit amet dignissim erat. Aliquam erat volutpat. Aenean laoreet metus leo, laoreet feugiat enim suscipit quis. Praesent mauris mauris, ornare vitae tincidunt sed, hendrerit eget augue. Nam nec vestibulum nisi, eu dignissim nulla.
+      <br /><br />
+    </div>
+    </div>
+  </div>
+
+  <div class="content-box-large">
+
+      <h2>Usage Information</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>BoxID</th>
+            <th>Location</th>
+            <th>Start Date</th>
+            <th>Finish Date</th>
+            <th>Additional Fee</th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+/*  $("#btn_open").click(function(){
+    var lock = 'open';
+    var boxID=$("#btn_open").val();
+    $.ajax({
+      type: 'POST',
+      url:'{% url 'home:lock' %}',
+      dataType:"json",
+      async:true,
+      data:{
+        lock:'open',
+        boxID:boxID,
+        csrfmiddlewaretoken:'{{ csrf_token}}'
+      },
+      suceess:function(data){
+        alert(data)
+      },
+      error: function(){
+        alert('err')
+      },
+    });
+  });
+  $("#btn_close").click(function(){
+    var lock = 'close';
+    var boxID=$("#btn_close").val();
+    $.ajax({
+      type: 'POST',
+      url:'{% url 'home:lock' %}',
+      dataType:"json",
+      async:true,
+      data:{
+        lock:'close',
+        boxID:boxID,
+        csrfmiddlewaretoken:'{{ csrf_token}}'
+      },
+      suceess:function(data){
+        alert(data)
+      },
+      error: function(){
+        alert('err')
+      },
+    });
+  });*/
+/*  function show_modal(str){
+
+
+    var modal_content = document.getElementById('modal_body');
+    modal_content.innerHTML=str;
+    $("#myModal").modal('show');
+}*/
+</script>

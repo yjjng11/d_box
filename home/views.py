@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 
 from django.views import generic
 from django.views.generic import View
-from django.views.generic import DetailView
+from django.views.generic import *
 
 from .forms import UserForm
 from django.http import HttpResponse
@@ -30,18 +30,28 @@ wiringpi.wiringPiSetupGpio()
 wiringpi.pinMode(18, 1) # sets GPIO 18 to output'''
 location=0
 boxNum=0
+
+class AdminLV(ListView):
+    #model = Box.objects.filter().select_related()
+
+    model = Box;
+    template_name = 'home/admin.html'
+    context_object_name = 'boxes'
+
 def lock(request):
     if request.method == "POST":
         lock = request.POST['lock']
         boxID = request.POST['boxID']
         b = get_object_or_404(Box, boxID=boxID)
-        if lock == 'open':
+        if lock == 'close':
             b.lock = 0
             b.save()
-        else:
+        elif lock == 'open':
             b.lock = 1
             b.save()
-    return JsonResponse({'lock':b.lock})
+        else:
+            b.save()
+    return render(request, 'home/admin.html')
         #return render(request, 'home/box_detail.html')
     #return HttpResponse('')
 
