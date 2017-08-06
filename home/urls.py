@@ -17,5 +17,6 @@ urlpatterns = [
     url(r'^mybox/(?P<pk>[A-Z0-9]+)/$', views.BoxDetail.as_view(), name='box_detail'),
     url(r'^lock/$', views.lock, name='lock'),
     url(r'^home/$', views.home, name='home'),
-    url(r'^custom_admin/$', views.AdminLV.as_view(), name='custom_admin')
+    url(r'^custom_admin/$', views.AdminLV.as_view(), name='custom_admin'),
+    url(r'^home/lock/custom_admin/$', views.AdminLV.as_view(), name='custom_admin')
 ]

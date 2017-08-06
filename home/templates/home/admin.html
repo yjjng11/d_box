@@ -109,13 +109,13 @@
           {% if box.state == 0 %}
             <img src="{% static "images/unused_box.png" %}" width="100px" height="100px">
            {% else %}
-           <img src="{% static "images/used_box.png" %}"  width="100px" height="100px">
+           <a class="fa fa-pencil" data-toggle="modal" href="/home/mybox/{{box.boxID}}/" data-target="#myModal" title="edit item" data-tooltip><img src="{% static "images/used_box.png" %}"  width="100px" height="100px"></a>
            User : {{box.userID}}
            {% endif %}
         {% endfor %}
 
 
-      <!--  <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal fade" id="myModal" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content" >
               <div class="modal-header">
@@ -131,7 +131,7 @@
             </div>
 
           </div>
-        </div>-->
+        </div>
 
     </div>
   <div class="row">

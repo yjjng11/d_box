@@ -5,44 +5,39 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-default">
-   <div class="container">
-    <div class="navbar-header pagescroll">
-     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-     </button>
-     <a class="navbar-brand" href="{% url 'home:home' %}">Delivery Box</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
 
-     <ul class="nav navbar-nav navbar-right">
-       <li><a href="{% url 'home:home' %}">예약하기</a></li>
-       <li><a href="{% url 'home:mybox' %}">My Box</a></li>
-       <li><a href="{% url 'home:logout_user' %}">Logout</a></li>
-     </ul>
-    </div>
-   </div>
-  </nav>
+        <form class="form-horizontal" method="POST" role="form" action="{% url 'home:lock' %}">
+          {% csrf_token %}
+        <div class="modal-body">
 
-<h1>{{object.location}} {{object.boxNumber}}번</h1>
-<br>
-<div>userID: {{ object.userID}}</div>
-<div>microswitch: {{ object.microswitch}}</div>
-<div>led: {{object.led}}</div>
-<div>image: {{object.image}}</div>
-<div>lock: {{object.lock}}</div>
+          <h1>{{object.location}} {{object.boxNumber}}번</h1>
+          <br>
+          <div>userID: {{ object.userID}}</div>
+          <div>microswitch: {{ object.microswitch}}</div>
+          <div>led: {{object.led}}</div>
+          <div>image: {{object.image}}</div>
+          <div>lock: {{object.lock}}</div>
 
-   {% if object.lock == 1 %}
-   <div><button class="btn btn-default" name="button" id="btn" value="open">문 열기</button></div>
-   {% else %}
-   <div><button class="btn btn-default" name="button" id="btn" value="close">문 닫기</button></div>
-   {% endif %}
+          <input type="hidden" name="boxID" value={{object.boxID}} />
 
-   <div><button class="btn btn-default">사진 보기</button></div>
-   <div><button class="btn btn-default">반납하기</button></div>
+           {% if object.lock == 1 %}
+           <div><input type="submit" name="button" id="btn" value="open"></button></div>
+           {% else %}
+           <div><input type="submit" name="button" id="btn" value="close"></button></div>
+           {% endif %}
+
+
+         </div>
+       </form>
+
+         <div class="modal-footer">
+                <input type="button" class="btn btn-default" data-dismiss="modal" value="닫기" />
+              </div>
+
+
+
 
 <script type="text/javascript">
   /*$(document).ready(function(){
@@ -60,11 +55,12 @@
           csrfmiddlewaretoken:'{{ csrf_token}}'
         },
         suceess:function(data){
+          alert(data);
         },
         error: function(){
           alert('err')
         },
       });
       });
-    });
+    });*/
 </script>

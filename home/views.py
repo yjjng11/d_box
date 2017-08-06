@@ -31,6 +31,7 @@ wiringpi.pinMode(18, 1) # sets GPIO 18 to output'''
 location=0
 boxNum=0
 
+
 class AdminLV(ListView):
     #model = Box.objects.filter().select_related()
 
@@ -40,18 +41,20 @@ class AdminLV(ListView):
 
 def lock(request):
     if request.method == "POST":
-        lock = request.POST['lock']
-        boxID = request.POST['boxID']
+        lock = request.POST.get('button')
+        boxID = request.POST.get('boxID')
         b = get_object_or_404(Box, boxID=boxID)
         if lock == 'close':
-            b.lock = 0
-            b.save()
-        elif lock == 'open':
             b.lock = 1
             b.save()
+        #    b.lock = 0
+        #    b.save()
+        #elif lock == 'open':
         else:
+            b.lock = 0
             b.save()
-    return render(request, 'home/admin.html')
+
+        return redirect('/custom_admin')
         #return render(request, 'home/box_detail.html')
     #return HttpResponse('')
 
