@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../views/partials/head %>
+  </head>
+  <body>
+    <% include ../views/partials/nav %>
+    <div id=login_container>
+  	<h1>Login</h1>
+  	<br>
+    <form  method="post" action="/login">
+    <div>
+      <div>
+    	<label class="control-label">ID</label>
+    	<input type="text" name="id">
+      </div>
+      <div>
+    	<label>PW</label>
+    	<input type="password" name="password">
+      </div>
+    	</div>
+    	
+    	<input class="btn btn-default btn-xs" type="submit" value="enter" name="">
+    </form>
+    <form method="get" action="/register">
+      <input class="btn btn-default btn-xs" type="submit" value="register">
+    </form>
+    </div>
+  </body>
+</html>
