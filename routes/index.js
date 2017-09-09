@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/User')
+var User = require('../models/User');
+var Boxes = require('../models/Boxes');
+var UsageInfo = require('../models/UsageInfo');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -8,6 +10,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res){
+
+	
 		addUser(req.body.id, req.body.password, function(err, result){
 		if(err){throw err;}
 		if(result){
@@ -16,7 +20,16 @@ router.post('/', function(req, res){
 		}else{
 			res.render('index');
 		}
-	})
+	});
+});
+
+router.get('/reserve', function(req, res){
+
+	Boxes.find({})
+  			.exec(function(err, boxes){
+    		if(err) return res.json(err);
+    		res.render("reserve", {boxes:boxes});
+ 	 		});
 });
 
 router.get('/register', function(req, res){
@@ -30,7 +43,12 @@ router.post('/login',function(req, res){
 		if(err){throw err;}
 		if(docs){
 			console.dir(docs);
-			res.render('reserve');
+			req.session.user_id = req.body.id;
+			Boxes.find({})
+  			.exec(function(err, boxes){
+    		if(err) return res.json(err);
+    		res.render("reserve", {boxes:boxes});
+ 	 		});
 		}else{
 			res.render('login');
 		}
@@ -38,7 +56,33 @@ router.post('/login',function(req, res){
 	
 });
 
-var addUser = function(id, password, callback){
+router.post('/reserve', function(req, res){
+
+	var box_id = req.body.box;
+	var user_id = req.session.user_id;
+	var start_date = req.body.start_date;
+	var finish_date = req.body.finish_date;
+
+	UsageInfo.create({box_id: box_id, user_id: user_id, start_date: start_date, finish_date:finish_date, price:0}, function(err, info){
+    if(err) return res.json(err);
+    res.send("info");
+  });
+
+    Boxes.findOneAndUpdate({ box_id: box_id },  { user_id: user_id, using: 1, } , function(err, box) {
+    	if (err) throw err;
+   	 	res.render('complete');
+  	});
+
+
+});
+
+router.get('/logout', function(req, res){
+	req.session = null
+  	res.clearCookie('sid'); // 세션 쿠키 삭제
+  	res.render('login');
+});
+
+var addUser = function(id, password,  callback){
 	var user = new User({"id": id, "password": password});
 
 	user.save(function(err){

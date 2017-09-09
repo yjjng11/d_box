@@ -20,22 +20,15 @@
 
             	Box ID : <%= box.box_id %><br>
 
+            	<a href="/admin/<%= box._id %>">
            		 <% if(box.using == 0){ %>
             	<img src="/images/unused_box.png" width="100px" height="100px">
          		<% } else{ %>  
          		 <img src="/images/used_box.png" width="100px" height="100px">
-         		 <% } %><br>
+         		 <% } %>
+         		 </a>
+         		 <br>
                 
-                User ID : <%= box.user_id %><br>
-                LED(out) : <%= box.led_out %><br>
-                LED(in) : <%= box.led_in %><br>
-                Photosensor : <%= box.photosen %><br>
-                Microswitch : <%= box.micros %><br>
-                Lock : <%= box.lock %>
-
-                <form method="get" action="/admin/<%= box._id %>">
-      				<button type="submit" class="btn btn-default">lock</button>
-   				</form>
              </div>
           <% }) %>
           </div>
