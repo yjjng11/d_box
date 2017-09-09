@@ -65,8 +65,7 @@ router.post('/reserve', function(req, res){
 
 	UsageInfo.create({box_id: box_id, user_id: user_id, start_date: start_date, finish_date:finish_date, price:0}, function(err, info){
     if(err) return res.json(err);
-    res.send("info");
-  });
+  	});
 
     Boxes.findOneAndUpdate({ box_id: box_id },  { user_id: user_id, using: 1, } , function(err, box) {
     	if (err) throw err;
