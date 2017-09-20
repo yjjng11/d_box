@@ -43,26 +43,27 @@
             </div>
 
             <div class="bs-component">
-              <table class="table table-striped table-hover ">
+              <table class="table table-striped table-hover" id="info_table">
                 <thead>
                   <tr>
-                    <th>#</th>
                    	<th>User</th>
-           			<th>BoxID</th>
-		            <th>Start Date</th>
-		            <th>Finish Date</th>
-		            <th>Price</th>
+               			<th>BoxID</th>
+    		            <th>Start Date</th>
+    		            <th>Finish Date</th>
+    		            <th>Price</th>
                   </tr>
                 </thead>
                 <tbody>
+                <% info.forEach(function(each_info) { %>
                   <tr>
-                    <td>1</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
+                    <td><%= each_info.user_id %></td>
+                    <td><%= each_info.box_id %></td>
+                    <td><%= each_info.start_date %></td>
+                    <td><%= each_info.finish_date %></td>
+                    <td><%= each_info.price %></td>
+                    <td><button type="submit" class="btn btn-default" id="delete_but" value="<%= each_info._id %>">delete</button></td>
                   </tr>
+                <% }) %>
                 </tbody>
               </table> 
             </div><!-- /example -->
@@ -71,5 +72,20 @@
         </div>
   </body>
   <script>
+    $("#delete_but").click(function(){
+      var _id = $('#delete_but').val();
+      $.ajax({
+      type: 'POST',
+      url: '/delete_info',
+      data: {_id: _id},
+      success: function(data) {
+          document.getElementById("info_table").deleteRow();
+        },
+      dataType: 'json',
+      async:false
+      });
+      
+
+    });
   </script>
 </html>

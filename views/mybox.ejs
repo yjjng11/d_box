@@ -5,6 +5,31 @@
   </head>
   <body>
     <% include ../views/partials/nav %>
+
+    <div class="container">
+
+    <div class="row">
+    	<div class="col-lg-12">
+    		<div class="page-header">
+              <h1 >My box</h1>
+            </div>
+            
+            <% boxes.forEach(function(box) { %>
+            
+            <div class="well" id="box_info">
+
+            	Box ID : <%= box.box_id %><br>
+
+            	<a href="/admin/<%= box._id %>">
+            	<img src="/images/used_box.png" width="100px" height="100px">
+         		 </a>
+         		 <br>
+                
+             </div>
+          <% }) %>
+          </div>
+    	</div>
+    </div>
     
   </body>
 </html>

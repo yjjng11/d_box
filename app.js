@@ -27,6 +27,7 @@ database.once('open',function(){
   console.log("DB connected");
 });
 
+
 /*
 function connectDB(){
 	var databaseUrl = 'mongodb://localhost:27017/dbox';
@@ -199,6 +200,28 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+/*http.listen(3000, function(){
+    console.log("Express server listening on port 3000 ");
+});
+
+io.on('connect', function(socket){
+     
+    console.log('a user connected');
+     
+    socket.broadcast.emit('hi');
+     
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+    });
+     
+    socket.on('chat message', function(msg){
+        console.log('message: ' + msg);
+        io.emit('chat message', msg);
+    }); 
+ 
+});*/
+
 
 app.listen(3000,function(){
   console.log("server on!");

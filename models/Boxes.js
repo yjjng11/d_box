@@ -12,5 +12,6 @@ var BoxSchema = mongoose.Schema({
 	, using : {type : Number, 'default' : 0}
 });
 
+
 var Boxes = mongoose.model("boxes",BoxSchema);
 module.exports= Boxes;

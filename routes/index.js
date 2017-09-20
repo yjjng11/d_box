@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/User');
 var Boxes = require('../models/Boxes');
 var UsageInfo = require('../models/UsageInfo');
+require('date-utils');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,7 +12,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res){
 
-	
 		addUser(req.body.id, req.body.password, function(err, result){
 		if(err){throw err;}
 		if(result){
@@ -21,6 +21,18 @@ router.post('/', function(req, res){
 			res.render('index');
 		}
 	});
+});
+
+router.get('/mybox', function(req, res){
+	Boxes.find({user_id:req.session.user_id})
+  			.exec(function(err, boxes){
+    		if(err) return res.json(err);
+    		res.render("mybox", {boxes:boxes});
+ 	 		});
+});
+
+router.post('/delete_info', function(req, res){
+	res.send({result:'success'});
 });
 
 router.get('/reserve', function(req, res){
@@ -60,10 +72,14 @@ router.post('/reserve', function(req, res){
 
 	var box_id = req.body.box;
 	var user_id = req.session.user_id;
-	var start_date = req.body.start_date;
-	var finish_date = req.body.finish_date;
+	var f_dt = new Date(req.body.finish_date);
+	var finish_date = f_dt.toFormat('YYYY-MM-DD');
+	var s_dt = new Date();
+	var start_date = s_dt.toFormat('YYYY-MM-DD HH24:MI:SS');
+	var day = s_dt.getDaysBetween(finish_date);
+	var price = (day+1) * 2000;
 
-	UsageInfo.create({box_id: box_id, user_id: user_id, start_date: start_date, finish_date:finish_date, price:0}, function(err, info){
+	UsageInfo.create({box_id: box_id, user_id: user_id, start_date: start_date, finish_date:finish_date, price:price}, function(err, info){
     if(err) return res.json(err);
   	});
 
@@ -71,7 +87,6 @@ router.post('/reserve', function(req, res){
     	if (err) throw err;
    	 	res.render('complete');
   	});
-
 
 });
 
