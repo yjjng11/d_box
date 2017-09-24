@@ -11,6 +11,8 @@ var flash = require('connect-flash');
 var expressSession = require('express-session');
 var expressErrorHandler = require('express-error-handler');
 
+var Boxes = require('./models/Boxes');
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var admin = require('./routes/admin');
@@ -25,6 +27,41 @@ var database=mongoose.connection;
 database.on('error',console.error.bind(console,'connection error:'));
 database.once('open',function(){
   console.log("DB connected");
+});
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
+server.listen(3000, function(){
+	console.log('Socket io server listening on port 3000');
+})
+
+io.on('connect', function(socket){
+	var first_data = -1;
+	var second_data = -1;
+	console.log('client :'+socket.id);
+	socket.on('sensor', function(data){
+		console.log('micros:' + data.micros+' ledout:'+data.ledout);
+	});
+
+	socket.on('lock', function(data){
+		console.log('브라우저 '+ socket.id +" "+ data.lock);
+		socket.broadcast.emit('rasp_lock', data);
+	});
+
+	socket.on('rasp_response', function(data){
+		if(data.lock == 0){
+			Boxes.findOneAndUpdate({ _id: data.id },  { lock: 0 } , function(err, box) {
+			if (err) throw err;
+			  });
+		} else {
+			Boxes.findOneAndUpdate({ _id: data.id },  { lock: 1 } , function(err, box) {
+			if (err) throw err;
+			  });
+		}
+		console.log('raspberry ' + socket.id+" "+data.lock);
+		socket.broadcast.emit('lock', data);
+	});
 });
 
 
@@ -223,8 +260,8 @@ io.on('connect', function(socket){
 });*/
 
 
-app.listen(3000,function(){
+/*app.listen(3000,function(){
   console.log("server on!");
-});
+});*/
 
 module.exports = app;

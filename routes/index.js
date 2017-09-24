@@ -7,7 +7,15 @@ require('date-utils');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('login');
+	if(req.session.user_id == null)
+	res.render('login');
+	else{
+		Boxes.find({})
+		.exec(function(err, boxes){
+	  	if(err) return res.json(err);
+	 	res.render("reserve", {boxes:boxes});
+	 	});
+	}
 });
 
 router.post('/', function(req, res){
@@ -24,11 +32,17 @@ router.post('/', function(req, res){
 });
 
 router.get('/mybox', function(req, res){
-	Boxes.find({user_id:req.session.user_id})
-  			.exec(function(err, boxes){
-    		if(err) return res.json(err);
-    		res.render("mybox", {boxes:boxes});
- 	 		});
+	
+	if(req.session.user_id == null)
+		res.render('login');
+	else{
+		Boxes.find({user_id:req.session.user_id})
+  		.exec(function(err, boxes){
+    	if(err) return res.json(err);
+    	res.render("mybox", {boxes:boxes});
+		  });
+	}
+	
 });
 
 router.post('/delete_info', function(req, res){
@@ -37,11 +51,15 @@ router.post('/delete_info', function(req, res){
 
 router.get('/reserve', function(req, res){
 
+	if(req.session.user_id == null)
+	res.render('login');
+	else{
 	Boxes.find({})
   			.exec(function(err, boxes){
     		if(err) return res.json(err);
     		res.render("reserve", {boxes:boxes});
- 	 		});
+			});
+	}
 });
 
 router.get('/register', function(req, res){
@@ -76,8 +94,11 @@ router.post('/reserve', function(req, res){
 	var finish_date = f_dt.toFormat('YYYY-MM-DD');
 	var s_dt = new Date();
 	var start_date = s_dt.toFormat('YYYY-MM-DD HH24:MI:SS');
-	var day = s_dt.getDaysBetween(finish_date);
+	var day = s_dt.getDaysBetween(f_dt);
 	var price = (day+1) * 2000;
+
+	if(req.session == 'undefined')
+		res.render('login');
 
 	UsageInfo.create({box_id: box_id, user_id: user_id, start_date: start_date, finish_date:finish_date, price:price}, function(err, info){
     if(err) return res.json(err);
@@ -91,9 +112,14 @@ router.post('/reserve', function(req, res){
 });
 
 router.get('/logout', function(req, res){
-	req.session = null
-  	res.clearCookie('sid'); // 세션 쿠키 삭제
-  	res.render('login');
+	console.log(req.session);
+	req.session.destroy(function(err){ 
+		res.clearCookie('sid'); // 세션 쿠키 삭제
+		console.log(req.session);
+		res.render('login');
+	});
+  	
+  	
 });
 
 var addUser = function(id, password,  callback){

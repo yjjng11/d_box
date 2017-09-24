@@ -2,6 +2,8 @@
 <html>
   <head>
     <% include ../views/partials/head %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
+    
   </head>
   <body>
     <% include ../views/partials/nav %>
@@ -34,28 +36,24 @@
     </div>
   </body>
   <script>
+    var socket = io();
     $("#lock_but").click(function(){
-     /* $.ajax({
-        type: 'POST',
-        url:'/admin',
-        dataType:"json",
-        async:true,
-        data:{
-        lock:<%= box.lock %>
-        },
-        function(data){
-          alert('sdf');
-        }
-      });*/
+      var lock_info = {lock:<%= box.lock %>, id:'<%= box._id %>'}
+      socket.emit('lock', lock_info);
+      socket.on('lock', function(msg){
+        $('#lock_status').html(msg.lock);
+        location.reload();
+      });
 
-            $.post(
+
+          /*  $.post(
              '/admin',
              {lock:<%= box.lock %>, id:'<%= box._id %>'},
              function(data) {
               $('#lock_status').html(data.lock);
             },
              'json'
-            );
+            );*/
 
     });
   </script>

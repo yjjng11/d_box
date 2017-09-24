@@ -79,7 +79,8 @@
       url: '/delete_info',
       data: {_id: _id},
       success: function(data) {
-          document.getElementById("info_table").deleteRow();
+          document.getElementById("info_table").deleteRow(1);
+          location.reload();
         },
       dataType: 'json',
       async:false
