@@ -46,7 +46,26 @@ router.get('/mybox', function(req, res){
 });
 
 router.post('/delete_info', function(req, res){
-	res.send({result:'success'});
+
+	var _id = req.body._id;
+	UsageInfo.findOne({_id:_id}, function(err, info){
+		if(err) throw err;
+		var info_instance = info;
+		console.log(info_instance.user_id);
+		Boxes.findOneAndUpdate({ user_id: info_instance.user_id },  { using: 0, user_id:'-' } , function(err, box) {
+			if (err) throw err;
+			UsageInfo.findByIdAndRemove(_id, function(err, user){
+				if(err) throw err;
+				res.send({result:'success'});
+			});
+		  });
+		  
+	});
+
+	
+	
+	
+	
 });
 
 router.get('/reserve', function(req, res){

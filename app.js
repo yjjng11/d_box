@@ -10,6 +10,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var expressSession = require('express-session');
 var expressErrorHandler = require('express-error-handler');
+var base64 = require('node-base64-image');
 
 var Boxes = require('./models/Boxes');
 
@@ -53,14 +54,24 @@ io.on('connect', function(socket){
 		if(data.lock == 0){
 			Boxes.findOneAndUpdate({ _id: data.id },  { lock: 0 } , function(err, box) {
 			if (err) throw err;
-			  });
+				});
 		} else {
 			Boxes.findOneAndUpdate({ _id: data.id },  { lock: 1 } , function(err, box) {
 			if (err) throw err;
-			  });
+				});
 		}
 		console.log('raspberry ' + socket.id+" "+data.lock);
 		socket.broadcast.emit('lock', data);
+	});
+
+	socket.on('photo', function(data){
+		console.log('client to server')
+		socket.broadcast.emit('rasp_photo', data);
+	});
+	socket.on('photo_res',function(data){
+		base64.decode(data.image,{filename:'pictures/'+data.user_id+'_'+data.box_id},function(err,x){
+			console.log(x);
+		});
 	});
 });
 

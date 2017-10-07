@@ -3,6 +3,9 @@ var router = express.Router();
 var User = require('../models/User');
 var Boxes = require('../models/Boxes');
 var UsageInfo = require('../models/UsageInfo');
+var app = require('../app');
+
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -20,6 +23,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res){
+
+
 	Boxes.findOne({_id:req.params.id}, function(err, box){
     if(err) return res.json(err);
     res.render("eachbox", {box:box});
@@ -31,6 +36,7 @@ router.post('/', function(req, res){
 	var lock = req.body.lock;
 	var id = req.body.id;
 
+	
 	if(lock == 1){
 		Boxes.findOneAndUpdate({ _id: id },  { lock: 0 } , function(err, box) {
     	if (err) throw err;

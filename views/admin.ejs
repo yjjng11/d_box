@@ -61,7 +61,7 @@
                     <td><%= each_info.start_date %></td>
                     <td><%= each_info.finish_date %></td>
                     <td><%= each_info.price %></td>
-                    <td><button type="submit" class="btn btn-default" id="delete_but" value="<%= each_info._id %>">delete</button></td>
+                    <td><button type="submit" class="btn btn-default" id="delete_"+"<%= each_info.box_id %>" value="<%= each_info._id %>">delete</button></td>
                   </tr>
                 <% }) %>
                 </tbody>
@@ -72,14 +72,14 @@
         </div>
   </body>
   <script>
-    $("#delete_but").click(function(){
-      var _id = $('#delete_but').val();
+    $('[id^="delete_"]').click(function(){
+      var _id = $(this).val();
       $.ajax({
       type: 'POST',
       url: '/delete_info',
       data: {_id: _id},
       success: function(data) {
-          document.getElementById("info_table").deleteRow(1);
+          //document.getElementById("info_table").deleteRow(1);
           location.reload();
         },
       dataType: 'json',

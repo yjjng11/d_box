@@ -26,6 +26,7 @@
 
 
           <button type="submit" class="btn btn-default" id="lock_but">lock</button>
+          <button type="submit" class="btn btn-default" id="photo_but">photo</button>
 
         </div>
 
@@ -37,6 +38,16 @@
   </body>
   <script>
     var socket = io();
+
+    $("#photo_but").click(function(){
+      var photo_info = {id:'<%= box._id %>', user_id:'<%= box.user_id =%>', box_id:'<%= box.box_id %>'}
+      socket.emit('photo', photo_info);
+      socket.on('photo', function(msg){
+        //$('#lock_status').html(msg.lock);
+        //location.reload();
+      });
+    });
+
     $("#lock_but").click(function(){
       var lock_info = {lock:<%= box.lock %>, id:'<%= box._id %>'}
       socket.emit('lock', lock_info);
