@@ -68,124 +68,30 @@ io.on('connect', function(socket){
 		console.log('client to server')
 		socket.broadcast.emit('rasp_photo', data);
 	});
+
 	socket.on('photo_res',function(data){
+		
 		base64.decode(data.image,{filename:'pictures/'+data.user_id+'_'+data.box_id},function(err,x){
+			if(err) throw err;
 			console.log(x);
+			socket.broadcast.emit('img_attach',data);
 		});
+	});
+
+
+	socket.on('upload',function(data){
+
+		console.log(data);
+
+		Boxes.findOneAndUpdate({ box_id: data.box_id },  { lock: data.lock, photosen: data.photosen, micros:data.micros } , function(err, box) {
+			if (err) throw err;
+				});
+
 	});
 });
 
 
-/*
-function connectDB(){
-	var databaseUrl = 'mongodb://localhost:27017/dbox';
 
-	mongoose.connect(databaseUrl);
-	database = mongoose.connection;
-
-	database.on('error', console.error.bind(console, 'mongoose connection error.'));
-	database.on('open', function(){
-		console.log('데이터베이스에 연결되었습니다. : ', + databaseUrl);
-
-		UserSchema = mongoose.Schema({
-			id : {type : String, required: true, unique: true},
-			password : {type: String, required: true},
-			name : {type: String, index: 'hashed'},
-			age: {type: Number, 'default': -1},
-			created_at: {type: Date, index: {unique: false}, 'default': Date.now},
-			updated_at: {type: Date, index: {unique: false}, 'default': Date.now}
-		});
-
-		UserSchema.static('findById', function(id, callback){
-			return this.find({id: id}, callback);
-		});
-
-		UserSchema.static('findAll', function(callback){
-			return this.find({}, callback);
-		});
-		console.log('UserSchema 정의함.');
-
-		UserModel = mongoose.model("user", UserSchema);
-
-	});
-	database.on('disconnected', connectDB);
-}
-
-var authUser = function(database, id, password, callback){
-	console.log('authUser 호출됨.');
-
-	UserModel.findById(id, function(err, results){
-		if(err){
-			callback(err, null);
-			return;
-		}
-
-		console.log('아이디 [%s]로 사용자 검색 결과', id, password);
-		console.dir(results);
-
-		if(results.length > 0){
-			console.log('일치하는 사용자 찾음.',id);
-
-			if(results[0]._doc.password == password){
-				console.log('비밀번호 일치함');
-				callback(null, results);
-			}else{
-				console.lgo('비밀번호 일치하지 않음');
-				callback(null, null);
-			}
-			
-		} else {
-			console.log('아이디와 일치하는 사용자 찾지 못함.');
-			callback(null, null);
-		}
-	});
-};
-
-var addUser = function(database, id, password, name, callback){
-	console.log ('addUser 호출됨.');
-
-	var user = new UserModel({"id": id, "password": password, "name": name});
-
-	user.save(function(err){
-		if(err){
-			callback(err, null);
-			return;
-		}
-		console.log('사용자 데이터 추가함.');
-		callback(null, user);
-	});
-};
-
-app.post('/process/adduser', function(req, res){
-	console.log('/process/adduser 호출됨.');
-
-	var paramId = req.param('id');
-	var paramPassword = req.param('password');
-	var paramName = req.param('name');
-
-	if(database){
-		addUser(database, paramId, paramPassword, paramName, function(err, result){
-			if(err){throw err;}
-
-			if(result){
-				console.dir(result);
-
-				res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
-				res.write('<h2>사용자 추가 성공</h2>');
-				res.end();
-			}else{
-				res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
-				res.write('<h2>사용자 추가 실패</h2>');
-				res.end();
-			}
-		});
-	}else{
-		res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
-		res.write('<h2>데이터베이스 연결 실패</h2>')
-		res.end();
-	}
-});
-*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -198,6 +104,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'pictures')));
 
 app.use(expressSession({
 	secret:'my key',
@@ -205,28 +112,6 @@ app.use(expressSession({
 	saveUninitialized:true
 }));
 
-/*
-//passport 사용 설정
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
-
-//사용자 인증에 성공했을 때 호출
-passport.serializeUser(function(user, done){
-	console.log('serializeUser() 호출됨.');
-	console.dir(user);
-
-	done(null, user);
-})
-
-//사용자 인증 이후 사용자 요청이 있을 때마다 호출
-passport.deserializeUser(function(user, done){
-	console.log('deserializeUser() 호출됨.');
-	console.dir(user);
-
-	done(null, user);
-})
-*/
 app.use('/', index);
 app.use('/users', users);
 app.use('/admin',admin);

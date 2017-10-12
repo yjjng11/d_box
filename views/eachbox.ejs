@@ -17,16 +17,37 @@
         </div>
 
         <div class="well well-lg">
-          User ID : <%= box.user_id %><br>
-          LED(out) : <%= box.led_out %><br>
-          LED(in) : <%= box.led_in %><br>
-          Photosensor : <%= box.photosen %><br>
-          Microswitch : <%= box.micros %><br>
-          Lock : <p id="lock_status"><%= box.lock %></p>
+          User ID : <%= box.user_id %><br><br>
+          물건 유무 : <% if( box.photosen == 0){ %>
+                        O<br><br>
+                      <% } else{ %>
+                        X<br><br>
+                      <% } %>
+                      
+          문 여/닫힘 : <% if( box.micros == 0){ %>
+                        CLOSE<br><br>
+                      <% } else{ %>
+                        OPEN<br><br>
+                      <% } %>
+
+          잠금여부 : <p id="lock_status">
+            
+              <% if( box.lock == 0){ %>
+                LOCK<br><br>
+              <% } else{ %>
+                UNLOCK<br><br>
+              <% } %>
+            
+            </p>
 
 
           <button type="submit" class="btn btn-default" id="lock_but">lock</button>
           <button type="submit" class="btn btn-default" id="photo_but">photo</button>
+
+          <div id='img_div'>
+
+          </div>
+
 
         </div>
 
@@ -37,35 +58,44 @@
     </div>
   </body>
   <script>
-    var socket = io();
 
-    $("#photo_but").click(function(){
-      var photo_info = {id:'<%= box._id %>', user_id:'<%= box.user_id =%>', box_id:'<%= box.box_id %>'}
+      var socket = io();
+
+      socket.on('img_attach', function(msg){
+
+      var img_div = document.getElementById('img_div');
+      var img = document.createElement('img');
+      img.setAttribute('src','/'+msg.user_id+'_'+msg.box_id+'.jpg');
+      img.setAttribute('height','300');
+      img.setAttribute('width','300');
+      console.log('img_attach');
+      img_div.appendChild(img);
+      
+      });
+
+      $("#photo_but").click(function(){
+      var photo_info = {id:'<%= box._id %>', user_id:'<%= box.user_id %>', box_id:'<%= box.box_id %>'}
       socket.emit('photo', photo_info);
       socket.on('photo', function(msg){
         //$('#lock_status').html(msg.lock);
         //location.reload();
       });
+      
     });
 
     $("#lock_but").click(function(){
-      var lock_info = {lock:<%= box.lock %>, id:'<%= box._id %>'}
+      var lock_info = {lock:'<%= box.lock %>', id:'<%= box._id %>', box_id:'<%= box.box_id %>'}
       socket.emit('lock', lock_info);
       socket.on('lock', function(msg){
         $('#lock_status').html(msg.lock);
         location.reload();
       });
 
-
-          /*  $.post(
-             '/admin',
-             {lock:<%= box.lock %>, id:'<%= box._id %>'},
-             function(data) {
-              $('#lock_status').html(data.lock);
-            },
-             'json'
-            );*/
-
     });
+
+   // });
+    
+
+    
   </script>
 </html>
