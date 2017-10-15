@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/User');
 var Boxes = require('../models/Boxes');
 var UsageInfo = require('../models/UsageInfo');
+var PastInfo = require('../models/PastInfo');
 var app = require('../app');
 
 
@@ -15,8 +16,14 @@ router.get('/', function(req, res, next) {
 
     UsageInfo.find({})
       .exec(function(err, info){
-        if(err) return res.json(err);
-        res.render("admin", {boxes:boxes, info:info});
+				if(err) return res.json(err);
+				
+				PastInfo.find({})
+				.exec(function(err, pinfo){
+				if(err) return res.json(err);
+				res.render("admin", {boxes:boxes, info:info, pinfo:pinfo});
+				});
+
       });
 
  	 });

@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/User');
 var Boxes = require('../models/Boxes');
 var UsageInfo = require('../models/UsageInfo');
+var PastInfo = require('../models/PastInfo');
 require('date-utils');
 
 /* GET home page. */
@@ -52,6 +53,9 @@ router.post('/delete_info', function(req, res){
 		if(err) throw err;
 		var info_instance = info;
 		console.log(info_instance.user_id);
+		PastInfo.create({box_id: info.box_id, user_id: info.user_id, start_date: info.start_date, finish_date: info.finish_date, price: info.price}, function(err, info){
+			if(err) throw err;
+			  });
 		Boxes.findOneAndUpdate({ user_id: info_instance.user_id },  { using: 0, user_id:'-' } , function(err, box) {
 			if (err) throw err;
 			UsageInfo.findByIdAndRemove(_id, function(err, user){
@@ -62,9 +66,6 @@ router.post('/delete_info', function(req, res){
 		  
 	});
 
-	
-	
-	
 	
 });
 
@@ -125,7 +126,7 @@ router.post('/reserve', function(req, res){
 
     Boxes.findOneAndUpdate({ box_id: box_id },  { user_id: user_id, using: 1, } , function(err, box) {
     	if (err) throw err;
-   	 	res.render('complete');
+   	 	res.render('complete',{box_id:box_id});
   	});
 
 });

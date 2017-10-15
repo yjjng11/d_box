@@ -3,33 +3,34 @@
   <head>
     <% include ../views/partials/head %>
   </head>
+
   <body>
+    <div class="wrap">
     <% include ../views/partials/nav %>
-
-    <div class="container">
-
-    <div class="row">
-    	<div class="col-lg-12">
-    		<div class="page-header">
-              <h1 >My box</h1>
-            </div>
-            
+    <div class="box">
+        <figure class="background">
+          <video id="vid1" autoplay loop>
+            <source src="images/background.mp4" type="video/mp4"/>
+          </video>
+        </figure>
+    
+    		<section class="title2">
+            <p class="register2">MY bOX</p>
+        </section>
+        <section class="txt4">
+          <p class="intro">박스를 클릭하면 상세 정보를 열람할 수 있습니다.</p>
+        </section>
+            <section class="boxselect2">
             <% boxes.forEach(function(box) { %>
-            
-            <div class="well" id="box_info">
-
-            	Box ID : <%= box.box_id %><br>
-
+            <section class="each">
+            	<p class="mybox">Box ID : #<%= box.box_id %></p><br>
             	<a href="/admin/<%= box._id %>">
             	<img src="/images/used_box.png" width="100px" height="100px">
-         		 </a>
-         		 <br>
-                
-             </div>
+              </a>
+            </section>
           <% }) %>
-          </div>
-    	</div>
+          </section>
     </div>
-    
+  </div>
   </body>
 </html>

@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+@font-face {
+	font-family: 'RixGoB';
+	src:url('RixGoB.eot');
+	src:local(※), url('RixGoB.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'RixGoM';
+	src:url('RixGoM.eot');
+	src:local(※), url('RixGoM.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'RixHeadM';
+	src:url('RixHeadM.eot');
+	src:local(※), url('RixHeadM.woff') format('woff');
+}

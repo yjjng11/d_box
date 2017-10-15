@@ -3,11 +3,27 @@
   <head>
     <% include ../views/partials/head %>
   </head>
+
   <body>
-    <div class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <a href="../" class="navbar-brand">DBOX</a>
+    <div class="wrap">
+      <section class="fix">
+          <a class="btnMenu" href="#"><i class="fa fa-navicon"></i></a>
+          <h2><a href="../"><img src="images/box.png"/></a></h2>
+          <div class="whitebox"></div>
+        </section>
+
+        <nav>
+            <h1><img src="images/box.png"/></h1>
+            <ul id="gnb">
+              <li><a href="/admin">관리자용</a></li>
+              <li><a href="#">About Us</a></li>
+            </ul>
+          </nav>
+
+    <!-- <div class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="../" class="navbar-brand">DBOX</a>
       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -28,9 +44,42 @@
 
     </div>
   </div>
+</div> -->
+
+<div class="box">
+  <figure class="background">
+    <video id="vid1" autoplay loop>
+      <source src="images/background.mp4" type="video/mp4"/>
+    </video>
+  </figure>
+  <section class="title">
+    <p class="maintitle">D-BOX</p>
+  </section>
+  <section class="login">
+    <p class="txt1">LOG-IN</p>
+  </section>
+  <form method="post" action="/login">
+    <section class="id">
+      <p class="txt2">ID</p>
+    </section>
+    <section>
+      <input type="text" name="id" class="id2" placeholder="아이디     ">
+    </section>
+    <section class="password">
+      <p class="txt3">PW</p>
+    </section>
+    <section>
+      <input type="password" name="password" class="pw" placeholder="비밀번호     ">
+    </section>
+    <input class="login2" type="submit" value="로그인" name="">
+  </form>
+  <form method="get" action="/register">
+    <input class="register" type="submit" value="회원가입">
+  </form>
+</div>
 </div>
 
-    <div id=login_container>
+    <!-- <div id=login_container>
   	<h1>Login</h1>
   	<br>
     <form  method="post" action="/login">
@@ -50,6 +99,6 @@
     <form method="get" action="/register">
       <input class="btn btn-default btn-xs" type="submit" value="register">
     </form>
-    </div>
+    </div> -->
   </body>
 </html>

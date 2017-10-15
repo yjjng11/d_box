@@ -2,23 +2,42 @@
 <html>
   <head>
     <% include ../views/partials/head %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>    
+    
   </head>
+
   <body>
     <% include ../views/partials/nav %>
-    
-    <div class="container" id="admin_container">
+
+    <ul id="gototop">
+      <li><a href="#"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></li>
+    </ul>
+
+    <div id="window1" class="window">
+      <div class="box">
+      <div class="container">
+        <figure class="background">
+            <video id="vid1" autoplay loop>
+              <source src="images/background.mp4" type="video/mp4"/>
+            </video>
+          </figure>
+
+          <section>
+            <h8 class="icon1"><img src="images/icon1.png"/></h8>
+          </section>
 
     <div class="row">
     	<div class="col-lg-12">
-    		<div class="page-header">
-              <h1 >Boxes State</h1>
-            </div>
+    		<section class="page-header">
+              <p class="uinfo">BOXES STATE</p>
+        </section>
             
             <% boxes.forEach(function(box) { %>
             
-            <div class="well" id="box_info">
+            <div class="each" id="box_info">
+              
 
-            	Box ID : <%= box.box_id %><br>
+            	<p class="mybox">Box ID : <%= box.box_id %><br></p>
 
             	<a href="/admin/<%= box._id %>">
            		 <% if(box.using == 0){ %>
@@ -32,18 +51,33 @@
              </div>
           <% }) %>
           </div>
-    	</div>
+      </div>
+      </div>
+      </div>
+      </div>
 
 
+
+      <div id="window2" class="window">
+        <div class="box">
+        <div class="container">
+          <figure class="background">
+              <video id="vid1" autoplay loop>
+                <source src="images/background.mp4" type="video/mp4"/>
+              </video>
+            </figure>
+            <section>
+                <h8 class="icon1"><img src="images/icon1.png"/></h8>
+              </section>
 
     <div class="row">
           <div class="col-lg-12">
-            <div class="page-header">
-              <h1 id="tables">Usage Information</h1>
-            </div>
+            <section class="page-header">
+              <p class="uinfo" id="tables">USAGE INFORMATION</p>
+            </section>
 
             <div class="bs-component">
-              <table class="table table-striped table-hover" id="info_table">
+              <table class="table" id="info_table">
                 <thead>
                   <tr>
                    	<th>User</th>
@@ -61,19 +95,74 @@
                     <td><%= each_info.start_date %></td>
                     <td><%= each_info.finish_date %></td>
                     <td><%= each_info.price %></td>
-                    <td><button type="submit" class="btn btn-default" id="delete_"+"<%= each_info.box_id %>" value="<%= each_info._id %>">delete</button></td>
+                    <td><button class="delete" type="submit" class="btn btn-default" id="delete_"+"<%= each_info.box_id %>" value="<%= each_info._id %>">delete</button></td>
                   </tr>
                 <% }) %>
                 </tbody>
               </table> 
-            </div><!-- /example -->
+            </div>
           </div>
         </div>
         </div>
+        </div>
+        </div>
+
+        <div id="window3" class="window">
+          <div class="box">
+          <div class="container">
+            <figure class="background">
+                <video id="vid1" autoplay loop>
+                  <source src="images/background.mp4" type="video/mp4"/>
+                </video>
+              </figure>
+        <div class="row">
+            <div class="col-lg-12">
+              <section class="page-header">
+                <p class="uinfo" id="tables">PAST USAGE INFORMATION</p>
+              </section>
+  
+              <div class="bs-component">
+                <table class="table" id="info_table">
+                  <thead>
+                    <tr>
+                       <th>User</th>
+                       <th>BoxID</th>
+                      <th>Start Date</th>
+                      <th>Finish Date</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <% pinfo.forEach(function(each_info) { %>
+                    <tr>
+                      <td><%= each_info.user_id %></td>
+                      <td><%= each_info.box_id %></td>
+                      <td><%= each_info.start_date %></td>
+                      <td><%= each_info.finish_date %></td>
+                      <td><%= each_info.price %></td>
+                    </tr>
+                  <% }) %>
+                  </tbody>
+                </table> 
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+          </div>
+
   </body>
+
   <script>
+
+    var socket = io();    
+
     $('[id^="delete_"]').click(function(){
+
       var _id = $(this).val();
+
+      socket.emit('expire', _id);
+
       $.ajax({
       type: 'POST',
       url: '/delete_info',

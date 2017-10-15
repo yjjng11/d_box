@@ -13,6 +13,8 @@ var expressErrorHandler = require('express-error-handler');
 var base64 = require('node-base64-image');
 
 var Boxes = require('./models/Boxes');
+var UsageInfo = require('./models/UsageInfo');
+
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -82,14 +84,27 @@ io.on('connect', function(socket){
 	socket.on('upload',function(data){
 
 		console.log(data);
-
+		if(data != 'attack'){
 		Boxes.findOneAndUpdate({ box_id: data.box_id },  { lock: data.lock, photosen: data.photosen, micros:data.micros } , function(err, box) {
 			if (err) throw err;
 				});
+		}
+	});
 
+	socket.on('reserve', function(data){
+		socket.broadcast.emit('led_out_on',data);
+	});
+
+	socket.on('expire', function(data){
+
+		UsageInfo.findOne({_id:data}, function(err, result){
+			if(err) return err;
+			var info = result;
+			socket.broadcast.emit('led_out_off',info.box_id);
+		  });
+		
 	});
 });
-
 
 
 
